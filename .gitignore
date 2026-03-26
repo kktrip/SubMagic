@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.pth
+
+# Env
+.env
+backend/.env
+
+# Uploads / outputs (generated at runtime)
+uploads/
+outputs/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Whisper model cache (large)
+~/.cache/whisper/
