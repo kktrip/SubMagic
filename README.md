@@ -38,8 +38,11 @@ sudo apt install ffmpeg
 cd backend
 
 # 仮想環境を作成
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python3 -m venv .venv
+
+# 仮想環境を有効化
+source .venv/bin/activate       # Linux / macOS
+# .venv\Scripts\activate        # Windows (PowerShell)
 
 # 依存関係をインストール
 pip install -r requirements.txt
