@@ -4,7 +4,7 @@
 
 - **字幕（SRT）** — OpenAI Whisper（無料・ローカル実行）で文字起こし
 - **話者識別** — pyannote.audio で Speaker A, B, C… を自動分類
-- **画面分析レポート** — Claude AI が各フレームの画面内容を解説
+- **画面分析レポート** — AI が各フレームの画面内容を日本語で解説
 
 ---
 
@@ -17,8 +17,8 @@
 | Python 3.10+ | バックエンド |
 | Node.js 18+ | フロントエンド |
 | ffmpeg | 音声・フレーム抽出 |
-| Anthropic APIキー | 画面分析（Claude） |
-| HuggingFace トークン | 話者識別（pyannote） |
+| Google API キー（無料）| 画面分析（Gemini） |
+| HuggingFace トークン（無料） | 話者識別（pyannote） |
 
 ### 1. ffmpeg をインストール
 
@@ -52,16 +52,29 @@ cp .env.example .env
 # .env を編集して APIキーを設定
 ```
 
-#### .env の設定
+#### 画面分析プロバイダーの選択（`.env`）
 
-```env
-ANTHROPIC_API_KEY=sk-ant-...        # https://console.anthropic.com/
-HUGGINGFACE_TOKEN=hf_...            # https://huggingface.co/settings/tokens
-WHISPER_MODEL=base                   # tiny / base / small / medium / large
-FRAME_INTERVAL=30                    # 何秒おきに1フレーム抽出するか
+3種類から選べます：
+
+| プロバイダー | 料金 | 設定 |
+|------------|------|------|
+| **Gemini**（デフォルト） | **無料**（1500回/日） | `VISION_PROVIDER=gemini` |
+| **Ollama**（ローカル） | **完全無料** | `VISION_PROVIDER=ollama` |
+| Claude | 有料 | `VISION_PROVIDER=claude` |
+
+**Gemini API キーの取得（無料）:**
+1. [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) にアクセス
+2. 「Create API key」をクリック
+3. 発行されたキーを `.env` の `GOOGLE_API_KEY` に設定
+
+**Ollama（完全無料・ローカル）を使う場合:**
+```bash
+# Ollama をインストール: https://ollama.com/
+ollama pull llava   # 画像認識モデルをダウンロード
+# .env で VISION_PROVIDER=ollama に設定
 ```
 
-#### HuggingFace の設定（話者識別に必要）
+#### HuggingFace の設定（話者識別・無料）
 
 1. [huggingface.co](https://huggingface.co) でアカウント作成
 2. [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1) の利用規約に同意
@@ -115,7 +128,7 @@ npm run dev
 |------|------|
 | 文字起こし | [openai/whisper](https://github.com/openai/whisper)（ローカル・無料） |
 | 話者識別 | [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)（無料） |
-| 画面分析 | Claude claude-opus-4-6（Anthropic API） |
+| 画面分析 | Gemini 2.0 Flash（無料）/ Ollama LLaVA（完全無料）/ Claude（有料） |
 | 音声/動画処理 | ffmpeg |
 | バックエンド | FastAPI + Python |
 | フロントエンド | React + TypeScript + Tailwind CSS |
